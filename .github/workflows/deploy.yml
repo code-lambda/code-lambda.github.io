@@ -1,0 +1,20 @@
+name: deploy
+run-name: Deploy to S3 and CloudFront
+on:
+  push:
+    branches:
+      - master
+jobs:
+  run-deployment-script:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run deployment script.
+        env:
+          CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+          DEST_BUCKET: ${{ secrets.DEST_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-1
+          AWS_DEFAULT_OUTPUT: json
+        run: bash deploy.sh
